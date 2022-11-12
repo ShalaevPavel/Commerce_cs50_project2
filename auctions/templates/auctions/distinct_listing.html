@@ -1,0 +1,50 @@
+{% extends "auctions/layout.html" %}
+
+
+{% block body %}
+
+    <div>
+        <h1>{{ listing_object.listing_name }}</h1>
+        {{ listing_object.listing_name }}
+        <img src="{{ listing_object.listing_url }}" width="225" height="225">
+    <div>
+         {% if related_bid.current_bid %}
+        {{ related_bid.current_bid}}$ by {{ related_bid.person_who_bid }}
+     {%else %}
+        {{ listing_object.listing_starting_bid }}$
+     {%endif %}
+    </div>
+
+        posted by {{ listing_object.creator }}
+        <div>
+            <form method="post">
+                {% csrf_token %}
+                <div>
+                    <button class="blue_btn" name="pushed" type="submit">add to Watchlist</button>
+                </div>
+            </form>
+            {% if listing_object.status %}
+                <form method="post" action="{% url "create_bid" listing_object.pk %}">
+                    {% csrf_token %}
+                    Bid: <input type="number" name="new_bid">
+                </form>
+            {% else %}
+                <h1>Sold to {{ related_bid.person_who_bid }} for {{ related_bid.current_bid }} $</h1>
+            {% endif %}
+                <form method="post" action="{% url "create_comment" listing_object.pk %}">
+                    {% csrf_token %}
+                    Comment: <input type="text" name="add_comment">
+                </form>
+            {% if current_user == listing_object.creator and listing_object.status %}
+                <form method="post" action="{% url "close_item" listing_object.pk %}">
+                    {% csrf_token %}
+                    <button type="submit" name="end_lot">Close</button>
+                </form>
+            {% endif %}
+        </div>
+    </div>
+    <h3>Comments:</h3>
+    <h5>{% for elem in  related %}  </h5>
+        <h5> "{{ elem.comment_itself }}"  by {% if elem.person_who_commented %}{{ elem.person_who_commented }} {% endif %}</h5>
+        <h5>{% endfor %}</h5>
+{% endblock %}

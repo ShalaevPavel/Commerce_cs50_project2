@@ -1,0 +1,23 @@
+{% extends "auctions/layout.html" %}
+
+
+{% block body %}
+    {% for item in objects %}
+        <div class="col-lg-4 col-md-6 col-sm-12 pb-4">
+                <div class="card h-100 p-4">
+                    <h1><a href="{% url 'goto_listning' item.listing_name %}">{{ item.listing_name }}</a></h1>
+                    <h5>{{ item.listing_description }}</h5>
+                    <img src="{{ item.listing_url }}" width="225" height="225">
+                    {{ item.starting_bid }}$
+                    <h6>category: {{ item.category }}</h6>
+                </div>
+
+
+    {% endfor %}
+
+    <a href="{% url "category" %}">Go back</a>
+
+
+
+
+{% endblock %}

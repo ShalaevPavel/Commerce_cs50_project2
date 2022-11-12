@@ -1,0 +1,12 @@
+body {
+    padding: 10px;
+}
+
+.blue_btn{
+
+    background-color: #005eff;
+}
+
+.red_btn{
+    background-color: #ff001e;
+}
